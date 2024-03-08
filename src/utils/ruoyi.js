@@ -4,7 +4,58 @@
  * 通用js方法封装处理
  * Copyright (c) 2019 ruoyi
  */
+export function debounce(fn, delay) {
+  let timer;
+  return function (...args) {
+    if (timer) {
+      clearTimeout(timer)
+    }
+    timer = setTimeout(() => {
+      fn.apply(this, args);
+    }, delay);
+  }
+}
+export function throttle(fn, delay) {
+  let timer;
+  return function () {
+    if (timer) {
+      return
+    }
+    timer = setTimeout(() => {
+      fn.apply(this, arguments);
+      timer = null
+    }, delay);
+  }
+}
+export const on = function (element, event, handler) {
+  if (document.addEventListener) {
+    if (element && event && handler) {
+      element.addEventListener(event, handler, false);
+    };
+  } else {
+    if (element && event && handler) {
+      element.attachEvent('on' + event, handler);
+    };
+  }
+}
 
+// 关闭监听事件
+export const off = (function () {
+  // 如果使用闭包的形式,要使用立即执行,不然访问到的element为undefined
+  if (document.removeEventListener) {
+    return function (element, event, handler) {
+      if (element && event) {
+        element.removeEventListener(event, handler, false);
+      }
+    };
+  } else {
+    return function (element, event, handler) {
+      if (element && event) {
+        element.detachEvent('on' + event, handler);
+      }
+    };
+  }
+})();
 // 日期格式化
 export function parseTime(time, pattern) {
   if (arguments.length === 0 || !time) {
@@ -88,7 +139,7 @@ export function selectDictLabel(datas, value) {
 
 // 回显数据字典（字符串数组）
 export function selectDictLabels(datas, value, separator) {
-  if (value === undefined || value.length ===0) {
+  if (value === undefined || value.length === 0) {
     return "";
   }
   if (Array.isArray(value)) {

@@ -43,6 +43,7 @@ import ImagePreview from "@/components/ImagePreview"
 import TreeSelect from '@/components/TreeSelect'
 // 字典标签组件
 import DictTag from '@/components/DictTag'
+import CommonTable from '@/components/CommonTable'
 
 const app = createApp(App)
 
@@ -55,6 +56,7 @@ app.config.globalProperties.handleTree = handleTree
 app.config.globalProperties.addDateRange = addDateRange
 app.config.globalProperties.selectDictLabel = selectDictLabel
 app.config.globalProperties.selectDictLabels = selectDictLabels
+app.config.globalProperties.log = window.console.log;
 
 // 全局组件挂载
 app.component('DictTag', DictTag)
@@ -65,6 +67,7 @@ app.component('ImageUpload', ImageUpload)
 app.component('ImagePreview', ImagePreview)
 app.component('RightToolbar', RightToolbar)
 app.component('Editor', Editor)
+app.component('CommonTable', CommonTable)
 
 app.use(router)
 app.use(store)

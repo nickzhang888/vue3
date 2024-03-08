@@ -155,8 +155,29 @@
             :columns="columns"
           ></right-toolbar>
         </el-row>
-
-        <el-table
+        <common-table
+          :data="userList"
+          :columns="table_columns"
+          :isSelected="true"
+          max-height="288px"
+          v-loading="loading"
+          class="tableBox"
+          ref="myTable"
+        >
+          <template #status>
+            <el-table-column label="状态" align="center">
+              <template #default="scope">
+                <el-switch
+                  v-model="scope.row.status"
+                  active-value="0"
+                  inactive-value="1"
+                  @change="handleStatusChange(scope.row)"
+                ></el-switch>
+              </template>
+            </el-table-column>
+          </template>
+        </common-table>
+        <!-- <el-table
           v-loading="loading"
           :data="userList"
           @selection-change="handleSelectionChange"
@@ -288,7 +309,8 @@
               </el-tooltip>
             </template>
           </el-table-column>
-        </el-table>
+        </el-table> -->
+
         <pagination
           v-show="total > 0"
           :total="total"
@@ -511,6 +533,14 @@ import {
   deptTreeSelect,
 } from "@/api/system/user";
 import { onMounted, reactive } from "vue";
+const table_columns = ref([
+  { label: "用户id", prop: "userId", width: 200 },
+  { label: "用户名", prop: "userName", width: 200 },
+  { label: "昵称", prop: "nickName", width: 200 },
+  { label: "部门", prop: "dept.deptName", width: 200 },
+  { label: "手机号", prop: "phonenumber", width: 200 },
+  { slot: "status" },
+]);
 
 const router = useRouter();
 const { proxy } = getCurrentInstance();
