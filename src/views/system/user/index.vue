@@ -161,6 +161,7 @@
           :isSelected="true"
           max-height="288px"
           v-loading="loading"
+          @rowClick="handleRowClick"
           class="tableBox"
           ref="myTable"
         >
@@ -663,6 +664,9 @@ const data = reactive({
 });
 
 const { queryParams, form, rules } = toRefs(data);
+function handleRowClick(row){
+  console.info(row);
+}
 
 /** 通过条件过滤节点  */
 const filterNode = (value, data) => {

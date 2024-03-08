@@ -44,7 +44,7 @@
         :formatter="col.formatter"
         align="center"
         :show-overflow-tooltip="true"
-        @click="handleClick(col)"
+        @click="handleColumnClick(col)"
       >
       </el-table-column>
     </template>
@@ -56,12 +56,12 @@
 
 <script setup>
 import { on, off, throttle } from "@/utils/ruoyi.js";
-const emit = defineEmits();
+const emit = defineEmits(["columnClick","rowClick","select"]);
 const currentIndex = ref(0);
 const tableData = ref([]);
 const scrollHeight = ref(0);
 const isCheckedAll = ref(false);
-const selectedRows = ref([]);
+let selectedRows = ref([]);
 const { proxy } = getCurrentInstance();
 const props = defineProps({
   // 是否加载显示
@@ -80,24 +80,27 @@ const props = defineProps({
   // 表格内数据
   data: {
     type: Array,
-    default: () => [],
+    default() {
+      return []
+    },
   },
   // 表格内列的名称
   columns: {
     type: Array,
-    default: () => [],
+    default() {
+      return []
+    },
   },
   // 查询的参数
   queryParams: {
     type: Object,
-    default() {
-      return {};
-    },
   },
   // 表格头部样式
   headerStyle: {
     type: Object,
-    default: () => {},
+    default() {
+      return {};
+    },
   },
   // 是否自动滚动
   isRoll: {
@@ -183,8 +186,9 @@ function autoProcess(index) {
   currentIndex = index;
 }
 //列点击事件
-function handleClick(col) {
-  emit("click", col);
+function handleColumnClick(col) {
+  console.info("列");
+  emit("columnClick", col);
 }
 // 勾选框变化时,自定义了勾选框,此处不触发
 function handleSelectionChange(selection) {
