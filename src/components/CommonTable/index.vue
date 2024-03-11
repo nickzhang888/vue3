@@ -56,7 +56,7 @@
 
 <script setup>
 import { on, off, throttle } from "@/utils/ruoyi.js";
-const emit = defineEmits(["columnClick","rowClick","select"]);
+const emit = defineEmits(["columnClick", "rowClick", "select"]);
 const currentIndex = ref(0);
 const tableData = ref([]);
 const scrollHeight = ref(0);
@@ -81,14 +81,14 @@ const props = defineProps({
   data: {
     type: Array,
     default() {
-      return []
+      return [];
     },
   },
   // 表格内列的名称
   columns: {
     type: Array,
     default() {
-      return []
+      return [];
     },
   },
   // 查询的参数
