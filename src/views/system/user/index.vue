@@ -81,8 +81,8 @@
           <el-form-item label="创建时间" style="width: 308px">
             <el-date-picker
               v-model="dateRange"
-              value-format="YYYY-MM-DD"
-              type="daterange"
+              value-format="YYYY-MM-DD HH:mm:ss"
+              type="datetimerange"
               range-separator="-"
               start-placeholder="开始日期"
               end-placeholder="结束日期"
@@ -160,6 +160,7 @@
           :columns="table_columns"
           :isSelected="true"
           max-height="288px"
+          :queryParams="queryParams"
           v-loading="loading"
           @rowClick="handleRowClick"
           class="tableBox"
@@ -462,6 +463,7 @@ import {
   addUser,
   deptTreeSelect,
 } from "@/api/system/user";
+import { getDateTime } from "@/utils/ruoyi";
 const table_columns = ref([
   { label: "用户id", prop: "userId" },
   { label: "用户名", prop: "userName" },
@@ -481,7 +483,6 @@ const table_columns = ref([
 
 const router = useRouter();
 const { proxy } = getCurrentInstance();
-console.info(getCurrentInstance());
 const { sys_normal_disable, sys_user_sex } = proxy.useDict(
   "sys_normal_disable",
   "sys_user_sex"
@@ -496,7 +497,7 @@ const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
-const dateRange = ref([]);
+const dateRange = ref(getDateTime("day"));
 const deptName = ref("");
 const deptOptions = ref(undefined);
 const initPassword = ref(undefined);
@@ -543,7 +544,10 @@ const myObject = reactive({
   author: "Jane Doe",
   publishedAt: "2016-04-10",
 });
-onMounted(() => {});
+onMounted(() => {
+  getDeptTree();
+  getList();
+});
 const myArr = ref([{ message: "Foo" }, { message: "Bar" }]);
 const data = reactive({
   form: {},
@@ -613,6 +617,23 @@ const filterNode = (value, data) => {
 watch(deptName, (val) => {
   proxy.$refs["deptTreeRef"].filter(val);
 });
+watch(
+  dateRange,
+  (val) => {
+    let data = {
+      startTime: val && val[0],
+      endTime: val && val[1],
+    };
+    queryParams.value = {
+      ...queryParams.value,
+      ...data,
+    };
+    console.info(queryParams.value, 111);
+  },
+  {
+    immediate: true,
+  }
+);
 /** 查询部门下拉树结构 */
 function getDeptTree() {
   deptTreeSelect().then((response) => {
@@ -621,14 +642,13 @@ function getDeptTree() {
 }
 /** 查询用户列表 */
 function getList() {
+  console.info(queryParams.value, 222);
   loading.value = true;
-  listUser(proxy.addDateRange(queryParams.value, dateRange.value)).then(
-    (res) => {
-      loading.value = false;
-      userList.value = res.rows;
-      total.value = res.total;
-    }
-  );
+  listUser(queryParams.value).then((res) => {
+    loading.value = false;
+    userList.value = res.rows;
+    total.value = res.total;
+  });
 }
 /** 节点单击事件 */
 function handleNodeClick(data) {
@@ -837,7 +857,4 @@ function submitForm() {
     }
   });
 }
-
-getDeptTree();
-getList();
 </script>

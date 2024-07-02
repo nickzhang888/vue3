@@ -54,10 +54,10 @@
   </el-table>
 </template>
 
-<script setup>
+<script setup name="CommonTable">
 import { on, off, throttle } from "@/utils/ruoyi.js";
 const emit = defineEmits(["columnClick", "rowClick", "select"]);
-const currentIndex = ref(0);
+let currentIndex = ref(0);
 const tableData = ref([]);
 const scrollHeight = ref(0);
 const isCheckedAll = ref(false);

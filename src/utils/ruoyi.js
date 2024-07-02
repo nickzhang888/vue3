@@ -1,9 +1,26 @@
-
-
+import moment from "moment";
 /**
  * 通用js方法封装处理
  * Copyright (c) 2019 ruoyi
  */
+export function getDateTime(date = 'day') {
+  let startTime, endTime;
+  switch (date) {
+    case "week":
+      startTime = moment().startOf("week").add(1, "days").format("YYYY-MM-DD HH:mm:ss");
+      endTime = moment().endOf("week").add(1, "days").format("YYYY-MM-DD HH:mm:ss");
+      break;
+    default:
+      startTime = moment().startOf(date).format("YYYY-MM-DD HH:mm:ss");
+      endTime = moment().endOf(date).format("YYYY-MM-DD HH:mm:ss");
+      break;
+  }
+
+  return [
+    startTime,
+    endTime,
+  ];
+}
 export function debounce(fn, delay) {
   let timer;
   return function (...args) {
