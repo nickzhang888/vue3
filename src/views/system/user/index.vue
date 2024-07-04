@@ -628,7 +628,6 @@ watch(
       ...queryParams.value,
       ...data,
     };
-    console.info(queryParams.value, 111);
   },
   {
     immediate: true,
@@ -642,7 +641,6 @@ function getDeptTree() {
 }
 /** 查询用户列表 */
 function getList() {
-  console.info(queryParams.value, 222);
   loading.value = true;
   listUser(queryParams.value).then((res) => {
     loading.value = false;

@@ -25,10 +25,13 @@
           {{
             (queryParams.pageNum - 1) * queryParams.pageSize + scope.$index + 1
           }}
-          {{ log(queryParams, "if") }}
+          <!-- {{ log(queryParams, "if") }} -->
         </span>
         <!-- 无分页时 -->
-        <span v-else>{{ scope.$index + 1 }}{{ log(queryParams, "else") }}</span>
+        <span v-else>
+          {{ scope.$index + 1 }}
+          <!-- {{ log(queryParams, "else") }} -->
+        </span>
       </template>
     </el-table-column>
     <template v-for="(col, index) in columns">
@@ -56,6 +59,7 @@
 
 <script setup name="CommonTable">
 import { on, off, throttle } from "@/utils/ruoyi.js";
+import { onBeforeMount, onMounted } from "vue";
 const emit = defineEmits(["columnClick", "rowClick", "select"]);
 let currentIndex = ref(0);
 const tableData = ref([]);
@@ -80,16 +84,12 @@ const props = defineProps({
   // 表格内数据
   data: {
     type: Array,
-    default() {
-      return [];
-    },
+    default: () => [],
   },
   // 表格内列的名称
   columns: {
     type: Array,
-    default() {
-      return [];
-    },
+    default: () => [],
   },
   // 查询的参数
   queryParams: {
@@ -98,9 +98,7 @@ const props = defineProps({
   // 表格头部样式
   headerStyle: {
     type: Object,
-    default() {
-      return {};
-    },
+    default: () => {},
   },
   // 是否自动滚动
   isRoll: {
@@ -126,6 +124,10 @@ const props = defineProps({
     default: 10,
   },
 });
+function checkType(data) {
+  const type = Object.prototype.toString.call(data);
+  return type;
+}
 onMounted(() => {
   nextTick(() => {
     mouseleave();
@@ -141,6 +143,7 @@ onMounted(() => {
     // on(this.ele, "scroll", this.onScroll);
   });
 });
+
 onBeforeUnmount(() => {
   mouseenter();
   //   off(this.ele, "scroll", this.onScroll);
