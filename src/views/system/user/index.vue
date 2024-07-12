@@ -1,15 +1,5 @@
 <template>
   <div class="app-container">
-    <el-button @click="increment"> 点击 </el-button>
-    <div>{{ obj.nested.count }}</div>
-    <div>{{ getObjLength }}</div>
-    <div v-for="(value, key, index) in myObject" :key="index">
-      {{ value }}
-    </div>
-    ----------
-    <div v-for="(item, index) in myArr" :key="index">
-      {{ item.message }}
-    </div>
     <el-row :gutter="20">
       <!--部门数据-->
       <el-col :span="4" :xs="24">
@@ -528,27 +518,12 @@ const columns = ref([
   { key: 5, label: `状态`, visible: true },
   { key: 6, label: `创建时间`, visible: true },
 ]);
-async function increment() {
-  obj.value.nested.count++;
-  obj.value.arr.push("baz");
-}
-const obj = ref({
-  nested: { count: 0 },
-  arr: ["foo", "bar"],
-});
-const getObjLength = computed(() => {
-  return obj.value.arr.length >= 3 ? "Yes" : "No";
-});
-const myObject = reactive({
-  title: "How to do lists in Vue",
-  author: "Jane Doe",
-  publishedAt: "2016-04-10",
-});
+
 onMounted(() => {
   getDeptTree();
   getList();
 });
-const myArr = ref([{ message: "Foo" }, { message: "Bar" }]);
+
 const data = reactive({
   form: {},
   queryParams: {

@@ -5,8 +5,8 @@
     v-loading="loading"
     :header-cell-style="headerStyle"
     @selection-change="handleSelectionChange"
-    @mouseenter.native="mouseenter"
-    @mouseleave.native="mouseleave"
+    @mouseenter="mouseenter"
+    @mouseleave="mouseleave"
     @row-click="handleRowClick"
     ref="table"
     :header-row-style="fixHeight"
@@ -59,7 +59,6 @@
 
 <script setup name="CommonTable">
 import { on, off, throttle } from "@/utils/ruoyi.js";
-import { onBeforeMount, onMounted } from "vue";
 const emit = defineEmits(["columnClick", "rowClick", "select"]);
 let currentIndex = ref(0);
 const tableData = ref([]);
