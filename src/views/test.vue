@@ -17,12 +17,17 @@
     ---------
     <div>主题色是:{{ sideTheme }}</div>
     <div>是否是深色系:{{ isDark }}</div>
+    ---------hook测试
+    <div>宽：{{ width }}</div>
+    <div>高：{{ height }}</div>
   </div>
 </template>
 <script setup name="test">
 import useSettingsStore from "@/store/modules/settings";
 import { storeToRefs } from "pinia";
 import { getCurrentInstance, onMounted, toRefs } from "vue";
+import useEventListener from "@/hooks/useEventListener";
+
 const { proxy } = getCurrentInstance();
 console.info(proxy);
 async function increment() {
@@ -31,6 +36,8 @@ async function increment() {
 }
 const message = inject("message");
 const settingsStore = useSettingsStore();
+const width = ref(0);
+const height = ref(0);
 
 const obj = ref({
   nested: { count: 0 },
@@ -66,4 +73,10 @@ onMounted(() => {
   });
   console.info(proxy.$pinia);
 });
+useEventListener(window, "resize", handleResize);
+
+function handleResize(e) {
+  width.value = window.innerWidth;
+  height.value = window.innerHeight;
+}
 </script>
