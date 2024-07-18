@@ -60,11 +60,11 @@
 <script setup name="CommonTable">
 import { on, off, throttle } from "@/utils/ruoyi.js";
 const emit = defineEmits(["columnClick", "rowClick", "select"]);
-let currentIndex = ref(0);
+const currentIndex = ref(0);
 const tableData = ref([]);
 const scrollHeight = ref(0);
 const isCheckedAll = ref(false);
-let selectedRows = ref([]);
+const selectedRows = ref([]);
 const { proxy } = getCurrentInstance();
 const props = defineProps({
   // 是否加载显示
@@ -169,7 +169,7 @@ function autoRoll(stop) {
     // 判断是否滚动到此元素,并高亮显示
     let index = parseInt(bodyWrapper.scrollTop / (props.rowHeight / 2));
     table.setCurrentRow(props.data[index], true);
-    if (currentIndex !== index) {
+    if (currentIndex.value !== index) {
       //根据不同行做需要做的事情
       autoProcess(index);
     }
@@ -185,7 +185,7 @@ function autoRoll(stop) {
   }, 5 * 10);
 }
 function autoProcess(index) {
-  currentIndex = index;
+  currentIndex.value = index;
 }
 //列点击事件
 function handleColumnClick(col) {
@@ -194,7 +194,7 @@ function handleColumnClick(col) {
 }
 // 勾选框变化时,自定义了勾选框,此处不触发
 function handleSelectionChange(selection) {
-  selectedRows = [...selection];
+  selectedRows.value = [...selection];
   emit("select", selection);
 }
 // 点击某一行时触发
